@@ -1,16 +1,19 @@
 var express = require('express');
-const userController = require('../controllers/usersController')
+const userController = require('../controllers/usersController');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/',userController.list);
+router.get('/', userController.list);
 
-router.get('/:id',userController.index);
+/* GET user by id. */
+router.get('/:id', userController.index);
 
-router.post('/',userController.create);
+/* POST users listing. */
+router.post('/', userController.create);
 
-router.put('/:id',userController.update);
+/* PUT users listing. */
+router.put('/:id', userController.update);
 
-router.delete('/:id',userController.destroy);
-
+/* DELETE users listing. */
+router.delete('/:id', userController.destroy);
 module.exports = router;

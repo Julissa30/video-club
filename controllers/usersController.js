@@ -1,30 +1,32 @@
 const express = require('express');
 
-
-function list(req,res,next){
-  res.send('Aqui estaran los usuarios del sistema');
-  //res.render('index', { title: 'mi app de video' });
+//Todos los elementos / => list
+function list(req, res, next) {
+  //res.send('Aqui estaràn los usuarios de la app');
+  res.render('index', { title: 'Mi app de video list' });
 }
 
-//regresa un elemento get
-
-function index(req,res,next){
-  res.render('index', { title: 'mi app de video index' });
+//Un elemento /:id => index
+function index(req, res, next) {
+  //res.send('Aqui estaràn los usuarios de la app');
+  res.render('index', { title: 'Mi app de video index' });
+}
+//Crea un elemento /create
+function create(req, res, next) {
+  //res.send('Aqui estaràn los usuarios de la app');
+  res.render('index', { title: 'Mi app de video create' });
+}
+//Modifica un elemento /:id
+function update(req, res, next) {
+  //res.send('Aqui estaràn los usuarios de la app');
+  res.render('index', { title: 'Mi app de video update' });
+}
+//Eliminar un elemento /:id
+function destroy(req, res, next) {
+  //res.send('Aqui estaràn los usuarios de la app');
+  res.render('index', { title: 'Mi app de video destroy' });
 }
 
-function create(req,res,next){
-  res.render('index', { title: 'mi app de video create ' });
-}
-
-function update(req,res,next){
-  res.render('index', { title: 'mi app de video update' });
-}
-
-function destroy(req,res,next){
-  res.render('index', { title: 'mi app de video destroy' });
-}
-
-
-module.exports={
+module.exports = {
 	list, index, create, update, destroy
-	}
+}

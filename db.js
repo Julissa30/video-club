@@ -1,27 +1,30 @@
 const Sequelize = require('sequelize');
+const directorModel = require('./models/director')
+const genreModel = require('./models/genre')
+const movieModel = require('./models/movie')
+const actorModel = require('./models/actor')
+const moviesActorsModel = require('./models/moviesactors')
+const memberModel = require('./models/member')
+const bookingsModel = require('./models/bookings')
+const copyModel = require('./models/copy')
 
-const directorModel = require('./models/director');
-const actorModel = require('./models/actor');
-const genreModel = require('./models/genre');
-const movieModel = require('./models/movie');
-const movieActorsModel = require('./models/moviesactors');
 
-//                              Nombre de la bd, user, password, conf obj
 const sequelize = new Sequelize('test', 'root', 'secret', {
-  host:'localhost',
-  dialect:'mysql'
+  host: '127.0.0.1',
+  dialect: 'mysql'
 });
 
 const Director = directorModel(sequelize, Sequelize);
-const Actor = actorModel(sequelize, Sequelize);
 const Genre = genreModel(sequelize, Sequelize);
 const Movie = movieModel(sequelize, Sequelize);
-const MoviesActors = movieActorsModel(sequelize, Sequelize);
+const Actor = actorModel(sequelize, Sequelize);
+const MoviesActors = moviesActorsModel(sequelize, Sequelize);
+const Member = memberModel(sequelize, Sequelize);
+const Bookings = bookingsModel(sequelize, Sequelize);
+const Copy = copyModel(sequelize, Sequelize);
 
-//Un genero puede tener muchas películas.
 Genre.hasMany(Movie, {as:'movies'});
-//Una pelicula puede tener un genero
-Movie.belongsTo(Genre, {as: 'genre'});
+Movie.belongsTo(Genre, {as:'genre'});
 
 Director.hasMany(Movie, {as:'movies'});
 Movie.belongsTo(Director, {as:'director'});
@@ -29,30 +32,33 @@ Movie.belongsTo(Director, {as:'director'});
 MoviesActors.belongsTo(Movie, {foreignKey:'movieId'});
 MoviesActors.belongsTo(Actor, {foreignKey:'actorId'});
 
+Bookings.belongsTo(Member, {foreignKey:'member_id'});
+Bookings.belongsTo(Copy, {foreignKey:'copy_id'});
+
 Movie.belongsToMany(Actor, {
   through: 'moviesActors',
-  foreignKey: 'actorId',
-  as: 'actors'
+  foreignKey:'actorId',
+  as:'actors'
 });
 
 Actor.belongsToMany(Movie, {
   through: 'moviesActors',
-  foreignKey: 'movieId',
-  as: 'movies'
+  foreignKey:'movieId',
+  as:'movies'
 });
 
 sequelize.sync({
   force:true
 }).then(()=>{
-  console.log("Db create");
-});
+  console.log('Db created');
+})
 
 /*sequelize.authenticate().then(()=>{
-  console.log("Conexión ok");
+  console.log("Conexion OK");
 }).catch(err => {
-  console.log('no existe conexión');
+  console.log("Conexion Fallida");
 });*/
 
-module.exports = {
-  Director, Actor, Genre, Movie
-};
+module.exports= {
+  Director, Genre, Movie, Actor, Member, Copy, Bookings
+}
